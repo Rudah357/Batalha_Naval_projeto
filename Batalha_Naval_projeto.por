@@ -11,14 +11,11 @@ programa
 		{
 			 menu()
 			 
-		}	enquanto(opcao != 4)
-
-   		// MENU INICIAL ----------------------------------------------------------------------------
-		
+		} enquanto(opcao != 4)
 	}
+
 	funcao menu()
 	{
-
 		escreva(" ================= // =================\n")
 		u.aguarde(50)
 		escreva("|      ~           ~        ~          |\n")
@@ -51,20 +48,36 @@ programa
 		limpa()
 		escolhas()
 
-		// OPÇÕES DE MENU ----------------------------------------------------------------------------
-		
 	}
+
 	funcao escolhas()
 	{
 		escolha(opcao)
 		{
 			caso 1:
-				   batalha_naval()
-
-				   pare
+				 batalha_naval()
+				 pare
 			
 			caso 2:
+				 regras()
+				 pare
+		
+			caso 3:
+				 creditos()
+				 pare
+		
+			caso 4:
+				 pare
+		
+			caso contrario:
+				 erro_operacao()
+				 pare
+		}
+	}
 
+	funcao regras()
+	{
+		
 		escreva(" ——————————————————— Regras —————————————————————— \n")
 		u.aguarde(50)
 		escreva("|                                                 |\n")
@@ -98,10 +111,10 @@ programa
 		escreva(" ————————————————————————————————————————————————— \n")
 		leia(back)
 		limpa()
-		pare
-		
-		caso 3:
-		 
+	}
+
+	funcao creditos()
+	{
 		escreva(" --------------------------------------\n")
 		u.aguarde(50)
 		escreva("| ~             ~                ~     |\n")
@@ -135,101 +148,80 @@ programa
 		escreva(" --------------------------------------\n")
 		leia(back)
 		limpa()
-		pare
-		
-			caso 4:
-			pare
-		
-		caso contrario:
+	}
 
+	funcao erro_operacao()
+	{
 		escreva(" ========= *** =========\n")
-		u.aguarde(30)
-		escreva("|                       |\n")
-		u.aguarde(30)
-		escreva("| Ocorreu um erro       |\n")
-		u.aguarde(30)
-		escreva("| durante a operação,   |\n")
-		u.aguarde(30)
-		escreva("| por favor, tente      |\n")
-		u.aguarde(30)
-		escreva("| novamente !           |\n")
-		u.aguarde(30)
-		escreva("|                       |\n")
-		u.aguarde(30)
+		escreva("|    Ocorreu um erro    |\n")
+		escreva("|    tente novamente!   |\n")
 		escreva("| 0. Back ->            |\n")
-		u.aguarde(30)
-		escreva("|                       |\n")
-		u.aguarde(30)
 		escreva(" ========= *** =========\n")
 		leia(back)
 		limpa()
-		
-		pare
-		 
-		}
-
-		// MAPA BATALHA NAVAL ----------------------------------------------------------------------------
-			
 	}
+
 	funcao batalha_naval()
 	{	
+		// Efeito de contagem que você já tinha
 		escreva(" ————————————————————————————————————————————————— \n")
-		u.aguarde(30)
-		escreva("|                                                 |\n")
-		u.aguarde(30)
-		escreva("|                                                 |\n")
-		u.aguarde(30)
-		escreva("|              Jogo iniciando em 3                |\n")
-		u.aguarde(30)
-		escreva("|                                                 |\n")
-		u.aguarde(30)
-		escreva("|                                                 |\n")
-		u.aguarde(30)
-		escreva(" ————————————————————————————————————————————————— \n")
-		u.aguarde(1050)
-		limpa()
-		escreva(" ————————————————————————————————————————————————— \n")
-		escreva("|                                                 |\n")
-		escreva("|                                                 |\n")
-		escreva("|              Jogo iniciando em 2                |\n")
-		escreva("|                                                 |\n")
-		escreva("|                                                 |\n")
+		escreva("|           Jogo iniciando em 3                   |\n")
 		escreva(" ————————————————————————————————————————————————— \n")
 		u.aguarde(1000)
 		limpa()
 		escreva(" ————————————————————————————————————————————————— \n")
-		escreva("|                                                 |\n")
-		escreva("|                                                 |\n")
-		escreva("|              Jogo iniciando em 1                |\n")
-		escreva("|                                                 |\n")
-		escreva("|                                                 |\n")
+		escreva("|           Jogo iniciando em 2                   |\n")
+		escreva(" ————————————————————————————————————————————————— \n")
+		u.aguarde(1000)
+		limpa()
+		escreva(" ————————————————————————————————————————————————— \n")
+		escreva("|           Jogo iniciando em 1                   |\n")
 		escreva(" ————————————————————————————————————————————————— \n")
 		u.aguarde(1000)
 		limpa()
 
 		game()
-		
 	}
-	funcao game() // CODIGO PARA RODAR O JOGO --------------------------------------------------------------
+
+	funcao game() 
 	{
-
-		
 		cadeia mar[4][4] = { {"~","~","~","~"}, {"~","~","~","~"}, {"~","~","~","~"}, {"~","~","~","~"} }
+		
+		// Lógica de sorteio sem repetir posição
+		inteiro navios_alocados = 0
+		inteiro l_navio[3], c_navio[3] 
 
+		enquanto(navios_alocados < 3)
+		{
+			inteiro nl = u.sorteia(0,3)
+			inteiro nc = u.sorteia(0,3)
+			logico repetido = falso
 
-		inteiro l1 = u.sorteia(0,3), c1 = u.sorteia(0,3)
-		inteiro l2 = u.sorteia(0,3), c2 = u.sorteia(0,3)
-		inteiro l3 = u.sorteia(0,3), c3 = u.sorteia(0,3)
-		inteiro opcao3 = 0
+			// Verifica se já existe navio nessa coordenada
+			para(inteiro i=0; i < navios_alocados; i++)
+			{
+				se(l_navio[i] == nl e c_navio[i] == nc)
+				{
+					repetido = verdadeiro
+				}
+			}
+
+			se(nao repetido)
+			{
+				l_navio[navios_alocados] = nl
+				c_navio[navios_alocados] = nc
+				navios_alocados++
+			}
+		}
 
 		inteiro tiros = 5
 		inteiro linha, coluna
 		inteiro acertos = 0
+		inteiro opcao3 = 0
 
 		enquanto(tiros > 0 e acertos < 3)
 		{
-
-			limpa()
+				limpa()
 		escreva(" ============= Batalha Naval ============== ======= Recursos =======\n")
 		escreva("|                                          |     ____      ____     |\n")
 		escreva("|        0       1       2       3         |    /    \\    /    \\    |\n")
@@ -252,49 +244,54 @@ programa
 		escreva("|    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~     |                        |\n")
 		escreva("|                                          |                        |\n")
 		escreva(" ========================================== ========================\n")
+			escreva("\nDigite a linha (0-3): ")
+			leia(linha)
+			escreva("Digite a coluna (0-3): ")
+			leia(coluna)
 
-		faca {
-    			escreva("\nDigite a linha (0-3): ")
-    			leia(linha)
-    
-   		 se (linha < 0 ou linha > 3) {
-       		 escreva("COORDENADA INVÁLIDA! Tente um número entre 0 e 3.\n")
-   			 }
-			} enquanto (linha < 0 ou linha > 3)
-
-		faca {
-   			 escreva("Digite a coluna (0-3): ")
-    			 leia(coluna)
-    
-   		 se (coluna < 0 ou coluna > 3) {
-       		 escreva("COORDENADA INVÁLIDA! Tente um número entre 0 e 3.\n")
-   			 }
-			} enquanto (coluna < 0 ou coluna > 3)
-
-			se((linha == l1 e coluna == c1) ou 
-			   (linha == l2 e coluna == c2) ou 
-			   (linha == l3 e coluna == c3))
+			se(linha < 0 ou linha > 3 ou coluna < 0 ou coluna > 3)
 			{
-				se(mar[linha][coluna] == "X") {
-					escreva("Você já acertou esse local!\n")
-				} senao {
-					escreva("\nBUM! Você acertou um navio!\n\n")
-					mar[linha][coluna] = "X"
-					acertos++
-				}
+				escreva("COORDENADA INVÁLIDA!")
+				u.aguarde(1000)
 			}
 			senao
 			{
-				escreva("\nVocê acertou na água...\n\n")
-				mar[linha][coluna] = "A"
-			}
+				logico acertou = falso
+				para(inteiro i=0; i < 3; i++)
+				{
+					se(linha == l_navio[i] e coluna == c_navio[i])
+					{
+						acertou = verdadeiro
+					}
+				}
 
-			tiros--
-			u.aguarde(1500)
+				se(acertou)
+				{
+					se(mar[linha][coluna] == "X")
+					{
+						escreva("\nVocê já acertou esse local!\n")
+					}
+					senao
+					{
+						escreva("\nBUM! NAVIO ATINGIDO!\n")
+						mar[linha][coluna] = "X"
+						acertos++
+					}
+				}
+				senao
+				{
+					escreva("\nÁGUA...\n")
+					mar[linha][coluna] = "A"
+					tiros--
+				}
+				u.aguarde(1200)
+			}
 		}
 
+		limpa()
 		se(acertos == 3)
 		{ 
+			
 		escreva(" ————————————————————————————————————————————————— \n")
 		escreva("| *     *                *              *      *  |\n")
 		escreva("|               *               *           *     |\n")
@@ -306,24 +303,10 @@ programa
 		escreva("|                                                 |\n")
 		escreva(" ————————————————————————————————————————————————— \n")
 		leia(opcao3)
-
-		escolha(opcao3)
-		{
-			caso 1:
-				 limpa()
-				 menu()
-				 pare
-
-			caso contrario:
-				 limpa()
-				 menu()
-				 pare
-		}
-		
 		}
 		senao
 		{
-		escreva(" ————————————————————————————————————————————————— \n")
+			escreva(" ————————————————————————————————————————————————— \n")
 		escreva("|                                                 |\n")
 		escreva("|                                                 |\n")
 		escreva("|          Fim de jogo, você perdeu...            |\n")
@@ -334,30 +317,7 @@ programa
 		escreva("|                                                 |\n")
 		escreva(" ————————————————————————————————————————————————— \n")
 		leia(opcao3)
-
-		escolha(opcao3)
-		{
-			caso 1:
-				 limpa()
-				 menu()
-				 pare
-
-			caso contrario:
-				 limpa()
-				 menu()
-				 pare
 		}
-		
-		}
-}}	
-/* $$$ Portugol Studio $$$ 
- * 
- * Esta seção do arquivo guarda informações do Portugol Studio.
- * Você pode apagá-la se estiver utilizando outro editor.
- * 
- * @POSICAO-CURSOR = 6764; 
- * @PONTOS-DE-PARADA = ;
- * @SIMBOLOS-INSPECIONADOS = ;
- * @FILTRO-ARVORE-TIPOS-DE-DADO = inteiro, real, logico, cadeia, caracter, vazio;
- * @FILTRO-ARVORE-TIPOS-DE-SIMBOLO = variavel, vetor, matriz, funcao;
- */
+		leia(opcao3)
+	}
+}
